@@ -1,27 +1,30 @@
 from django.db import models
 
 #Create your models here.
+
+#Collection
+class Collection(models.Model):
+  Collection_name = models.TextField(unique=True, blank=False, primary_key=True)
+  
+  def __str__(self):
+    return self.Collection_name
+
+#specific product
 class Product(models.Model):
   
-  
-  name = models.CharField(default="", max_length=60)
+  name = models.CharField(unique=True, blank=False, max_length=60)
   
   #pr_images = models.ImageField(blank=True, upload_to=products/)
   
-  price = models.DecimalField(default="990", max_digits=10, decimal_places=2)
+  price = models.DecimalField(blank=False, max_digits=10, decimal_places=2)
 
   #category selection
-  Categories = (
-    ("Winter Collection","Winter Collection"),
-    ("Summer Collection","Summer Collection"),
-  )
-  
-  category = models.TextField(blank=False, choices=Categories)
+  category = models.ManyToManyField(Collection, blank=True)
 
   #detail & description
-  details = models.TextField(default="", max_length=200)
+  details = models.TextField(blank=False, max_length=200)
   
-  description = models.TextField(default="", max_length=300)
+  description = models.TextField(blank=False, max_length=300)
   
   #washcare detail
   COTTON_501 = "this is cotton 501 washcare tips"
@@ -41,4 +44,5 @@ class Product(models.Model):
   
   pub_date = models.DateTimeField("date published")
   
-  
+  def __str__(self):
+    return self.name
